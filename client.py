@@ -1,6 +1,6 @@
 import socket
 
-host = "192.168.1.10"  # Change this to the IP address where your server is running
+host = "192.168.56.1"  # Change this to the IP address where your server is running
 port = 7777
 
 s = socket.socket()
@@ -11,7 +11,17 @@ data = s.recv(1024)
 # Print the banner
 print(data.decode().strip())
 
+# Get difficulty choice from the user
+difficulty_choice = input("Enter difficulty choice (a, b, c): ").strip().lower()
+s.sendall(difficulty_choice.encode())
+
 while True:
+    # Receive the banner
+    data = s.recv(1024)
+    # Print the banner
+    print(data.decode().strip())
+    
+
     # Get input from the user
     user_input = input("").strip()
 
