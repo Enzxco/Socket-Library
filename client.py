@@ -1,40 +1,34 @@
 import socket
 
-host = "192.168.56.1"  # Change this to the IP address where your server is running
+host = "192.168.56.1"
 port = 7777
 
-s = socket.socket()
-s.connect((host, port))
+def play_game():
+    s = socket.socket()
+    s.connect((host, port))
 
-# Receive the banner
-data = s.recv(1024)
-# Print the banner
-print(data.decode().strip())
+    # received the banner
+    print(s.recv(1024).decode().strip())
 
-# Get difficulty choice from the user
-difficulty_choice = input("Enter difficulty choice (a, b, c): ").strip().lower()
-s.sendall(difficulty_choice.encode())
-
-while True:
-    # Receive the banner
-    data = s.recv(1024)
-    # Print the banner
-    print(data.decode().strip())
-    
-
-    # Get input from the user
-    user_input = input("").strip()
-
-    s.sendall(user_input.encode())
-    reply = s.recv(1024).decode().strip()
-    print(reply)
-    if "Correct" in reply:
-        # Prompt for retry
-        retry_input = input().strip().lower()
-        s.sendall(retry_input.encode())
-        if retry_input != 'y':
-            if retry_input == 'n':
-                print("Thanks for Playing!")
+    while True:
+        user_input = input("").strip()
+        s.sendall(user_input.encode())
+        reply = s.recv(1024).decode().strip()
+        if "Correct" in reply:
+            print(reply)
             break
+        print(reply)
+        continue
 
-s.close()
+    s.close()
+
+# Main loop to play the game
+while True:
+    play_game()
+    print("\nDo you want to:")
+    print("(A) Play Again")
+    print("(B) Quit")
+    choice = input("Enter key: ")
+    if choice != "A":
+        print("Thank you for playing!")
+        break
